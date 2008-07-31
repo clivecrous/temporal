@@ -2,7 +2,19 @@
 # complete refactor
 module Temporal
   class Parser
+
+    @@literals = {
+        'now' => proc{Time.now},
+      }
+
     class << self
+
+      public
+
+      def literals
+        @@literals
+      end
+
       private
 
       def cleanup string
@@ -80,7 +92,21 @@ module Temporal
         result = nil
         temporal_adjustment = Temporal::Adjuster.parse( string )
         result ||= temporal_adjustment
-        result = Time.now if string =~ /now/
+
+        if @@literals.has_key?( string )
+          result = 
+            if @@literals[string].class == Proc
+              @@literals[string].call 
+            else
+              @@literals[string]
+            end
+        end
+
+        unless result
+          result = Time.parse( string, Time.at(0) )
+          result = nil if result == Time.at(0)
+        end
+
         result ||= string
 
         #puts "#{options[:travel].to_s} >> #{result}"
@@ -90,7 +116,8 @@ module Temporal
           return options[:context] + result if options[:travel] == :future
           return options[:context] - result if options[:travel] == :past
         end
-        throw "Unable to parse"
+
+        throw "Unable to parse `#{result.to_s}`"
 
       end
     end
