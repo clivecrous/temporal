@@ -5,6 +5,9 @@ module Temporal
 
     @@literals = {
         'now' => proc{Time.now},
+        'today' => proc{today_start=Time.parse(Time.now.strftime("%Y-%m-%d"));today_start...today_start+1.day},
+        'yesterday' => proc{today_start=Time.parse((Time.now-1.day).strftime("%Y-%m-%d"));today_start...today_start+1.day},
+        'tomorrow' => proc{today_start=Time.parse((Time.now+1.day).strftime("%Y-%m-%d"));today_start...today_start+1.day},
       }
 
     class << self
@@ -112,6 +115,7 @@ module Temporal
         #puts "#{options[:travel].to_s} >> #{result}"
 
         return result if result.class == Time
+        return result if result.class == Range and result.first.class == Time and result.last.class == Time
         if result.class == Temporal::Adjuster
           return options[:context] + result if options[:travel] == :future
           return options[:context] - result if options[:travel] == :past
