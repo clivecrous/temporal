@@ -44,6 +44,7 @@ module Temporal
       end
 
       public
+
       def parse string, options={}
 
         options = {
@@ -60,11 +61,32 @@ module Temporal
 
         text_numbers string
 
+        string.gsub!(/((?:year|month|week|day|hour|minute|second)s?)\s+and\s+([0-9]+)/,'\1 & \2')
+
         # XXX
         string.gsub!(/the third (\w+)/,'3 \1s')
 
+        phrases = string.split(/but|and|because/).map{|n|n.strip.gsub('&','and')}
+
+        if phrases.size > 1
+          results = []
+          phrases.each do |clause|
+            results << parse(clause,options)
+          end
+          return results
+        else
+          string = phrases[0]
+        end
+
+        if string =~ /is|was/
+          portions = string.split(/is|was/).map{|n|n.strip}
+          throw "too many is" if portions.size > 2
+          portions.map!{|n|parse(n,options)}
+          return Hash[ *portions ]
+        end
+
         if string =~ /after|from/
-          portions = string.split(/after|beyond|from/).map{|n|n.strip}
+          portions = string.split(/after|from/).map{|n|n.strip}
           context = parse( portions.pop, options )
           while not portions.empty?
             context = parse( portions.pop, options.merge({:context=>context,:travel=>:future}) )
@@ -81,8 +103,8 @@ module Temporal
           return context
         end
 
-        if string =~ /beyond/
-          portions = string.split(/beyond/).map{|n|n.strip}
+        if string =~ /beyond|and/
+          portions = string.split(/beyond|and/).map{|n|n.strip}
           context = parse( portions.pop, options )
           while not portions.empty?
             context = parse( portions.pop, options.merge({:context=>context}) )
@@ -121,7 +143,7 @@ module Temporal
           return options[:context] - result if options[:travel] == :past
         end
 
-        throw "Unable to parse `#{result.to_s}`"
+        result
 
       end
     end
