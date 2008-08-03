@@ -115,7 +115,7 @@ module Temporal
         #puts "(#{options[:context]},#{options[:travel].to_s})>> #{string}"
 
         result = nil
-        temporal_adjustment = Temporal::Adjuster.parse( string )
+        temporal_adjustment = Temporal::Shift.parse( string )
         result ||= temporal_adjustment
 
         if @@literals.has_key?( string )
@@ -138,7 +138,7 @@ module Temporal
 
         return result if result.class == Time
         return result if result.class == Range and result.first.class == Time and result.last.class == Time
-        if result.class == Temporal::Adjuster
+        if result.class == Temporal::Shift
           return options[:context] + result if options[:travel] == :future
           return options[:context] - result if options[:travel] == :past
         end

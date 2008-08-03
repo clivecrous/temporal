@@ -2,7 +2,7 @@ class Time
   MAX_MDAY = %w|31 30 31 30 31 30 31 31 30 31 30 31|.map{|n|n.to_i}
   alias alias_temporal_add +
   def + value
-    if value.class == Temporal::Adjuster
+    if value.class == Temporal::Shift
       value + self
     else
       alias_temporal_add( value )
@@ -10,7 +10,7 @@ class Time
   end
   alias alias_temporal_subtract -
   def - value
-    if value.class == Temporal::Adjuster
+    if value.class == Temporal::Shift
       value - self
     else
       alias_temporal_subtract( value )

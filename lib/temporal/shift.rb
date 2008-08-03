@@ -1,10 +1,10 @@
 module Temporal
-  class Adjuster
+  class Shift
     class << self
       def parse string
         return nil unless string =~ /[0-9]+ (second|minute|hour|day|week|month|year)s?/
         split = string.split
-        return Temporal::Adjuster.new( split[1], split[0].to_i )
+        return Temporal::Shift.new( split[1], split[0].to_i )
       end
     end
     attr_reader :adjuster
@@ -17,7 +17,7 @@ module Temporal
     end
     def + time
       return time.send( @adjuster, @amount ) if time.class == Time
-      if time.class == Temporal::Adjuster
+      if time.class == Temporal::Shift
         if @adjuster == time.adjuster
           @amount += time.amount
           return self
@@ -29,7 +29,7 @@ module Temporal
     end
     def - time
       return time.send( @adjuster, -@amount ) if time.class == Time
-      if time.class == Temporal::Adjuster
+      if time.class == Temporal::Shift
         if @adjuster == time.adjuster
           @amount -= time.amount
           return self

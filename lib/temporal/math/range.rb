@@ -1,6 +1,6 @@
 class Range
   def + something
-    if something.class == Temporal::Adjuster
+    if something.class == Temporal::Shift
       new_first = first + something
       new_last = last + something
       if last == max
@@ -13,7 +13,7 @@ class Range
     end
   end
   def - something
-    if something.class == Temporal::Adjuster
+    if something.class == Temporal::Shift
       new_first = first - something
       new_last = last - something
       if last == max
