@@ -97,19 +97,21 @@ module Temporal
 
       result[:months] = @months
 
-      result[:years] = months/12
+      result[:years] = (result[:months]/12).truncate
       result[:months] = result[:months] - ( result[:years] * 12 )
+      result[:months] = result[:months].truncate if result[:months].modulo(1) == 0
 
       result[:seconds] = @seconds
 
-      result[:weeks] = result[:seconds] / WEEK
+      result[:weeks] = (result[:seconds] / WEEK).truncate
       result[:seconds] = result[:seconds] - (result[:weeks] * WEEK)
-      result[:days] = result[:seconds] / DAY
+      result[:days] = (result[:seconds] / DAY).truncate
       result[:seconds] = result[:seconds] - (result[:days] * DAY)
-      result[:hours] = result[:seconds] / HOUR
+      result[:hours] = (result[:seconds] / HOUR).truncate
       result[:seconds] = result[:seconds] - (result[:hours] * HOUR)
-      result[:minutes] = result[:seconds] / MINUTE
+      result[:minutes] = (result[:seconds] / MINUTE).truncate
       result[:seconds] = result[:seconds] - (result[:minutes] * MINUTE)
+      result[:seconds] = result[:seconds].truncate if result[:seconds].modulo(1) == 0
 
       result = Hash[ *result.select{|unit, amount| amount != 0 }.flatten ]
 
