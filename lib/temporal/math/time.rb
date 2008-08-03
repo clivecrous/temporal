@@ -33,7 +33,7 @@ class Time
   end
   def add_months months
     tm = localtime
-    new_year = tm.year+(months/12)
+    new_year = tm.year+(((tm.month-1)+months)/12)
     new_month = (((tm.month-1)+months)%12)
     new_day = tm.day
     if new_month == 1
