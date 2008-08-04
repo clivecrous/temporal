@@ -6,3 +6,7 @@ end
 [Time].each do |klass|
   Temporal::Mathematics.operators( klass )
 end
+
+[Range].each do |klass|
+  Temporal::Mathematics.negation( klass )
+end
