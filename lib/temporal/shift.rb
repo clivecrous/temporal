@@ -88,10 +88,10 @@ module Temporal
       if to_be_added.class == Range
         new_first = self + to_be_added.first
         new_last = self + to_be_added.last
-        if to_be_added.max == to_be_added.last
-          return new_first..new_last
-        else
+        if to_be_added.exclude_end?
           return new_first...new_last
+        else
+          return new_first..new_last
         end
       end
 
