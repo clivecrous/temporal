@@ -1,4 +1,4 @@
-[Fixnum,Float].each do |klass|
+[Fixnum,Float,Range].each do |klass|
   Temporal::Mathematics.units( klass )
   Temporal::Mathematics.operators( klass )
 end

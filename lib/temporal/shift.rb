@@ -1,6 +1,8 @@
 module Temporal
   class Shift
 
+    include Comparable
+
     MINUTE = 60
     HOUR = MINUTE * 60
     DAY = HOUR * 24
@@ -45,6 +47,14 @@ module Temporal
       end
     end
 
+    def <=> target
+      return 1 if @months > target.months
+      return -1 if @months < target.months
+      return 1 if @seconds > target.seconds
+      return -1 if @seconds < target.seconds
+      0
+    end
+
     def self.unit? unit
       (unit.to_s.strip.downcase =~ /^(second|minute|hour|day|week|month|year)s?$/) != nil
     end
@@ -73,6 +83,16 @@ module Temporal
         end
         new_day = max_mday if new_day > max_mday
         return Time.local( new_year, new_month+1 , new_day, new_time.hour, new_time.min, new_time.sec, new_time.usec )
+      end
+
+      if to_be_added.class == Range
+        new_first = self + to_be_added.first
+        new_last = self + to_be_added.last
+        if to_be_added.max == to_be_added.last
+          return new_first..new_last
+        else
+          return new_first...new_last
+        end
       end
 
       raise Temporal::Anomaly.new( "Unable to add #{self.class} to instances of `#{to_be_added.class}'" )
