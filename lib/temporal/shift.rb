@@ -55,8 +55,12 @@ module Temporal
       0
     end
 
+    def self.units
+      %w|second minute hour day week month year|
+    end
+
     def self.unit? unit
-      (unit.to_s.strip.downcase =~ /^(second|minute|hour|day|week|month|year)s?$/) != nil
+      (unit.to_s.strip.downcase =~ /^(#{units.join('|')})s?$/) != nil
     end
 
     def + to_be_added
