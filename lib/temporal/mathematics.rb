@@ -3,17 +3,23 @@ module Temporal
 
     def self.units klass
       klass.class_eval do
-        alias :temporal_method_missing :method_missing
-        def method_missing( method, *arguments, &block )
-          return temporal_method_missing( method, *arguments, &block ) unless Temporal::Shift.unit?( method )
-          if self.class == Range
-            if self.exclude_end?
-              return Temporal::Shift.new( self.first, method )...Temporal::Shift.new( self.last, method )
-            else
-              return Temporal::Shift.new( self.first, method )..Temporal::Shift.new( self.last, method )
+        Temporal::Shift.units.each do |unit|
+          if klass == Range
+            define_method unit do
+              if exclude_end?
+                return Temporal::Shift.new( first, unit )...Temporal::Shift.new( last, unit )
+              else
+                return Temporal::Shift.new( first, unit )..Temporal::Shift.new( last, unit )
+              end
+            end
+          else
+            define_method unit do
+              Temporal::Shift.new( self, unit )
             end
           end
-          Temporal::Shift.new( self, method )
+          define_method "#{unit}s" do
+            send(unit)
+          end
         end
       end
     end
