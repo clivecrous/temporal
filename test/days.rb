@@ -40,3 +40,18 @@ describe 'Temporal math with days' do
   end
 
 end
+
+describe 'One day in other units' do
+  it 'is 24 hours' do
+    1.day.should.equal 24.hours
+  end
+  it 'is 1440 minutes' do
+    1.day.should.equal 1440.minutes
+  end
+  it 'is 86400 seconds' do
+    1.day.should.equal 86400.seconds
+  end
+  it 'is 1/7th of a week' do
+    1.day.should.equal((1.0/7).weeks)
+  end
+end
