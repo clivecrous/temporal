@@ -11,3 +11,9 @@ describe 'Temporal math with months' do
   end
 
 end
+
+describe 'One month in other units' do
+  it 'is 1/12th of a year' do
+    1.month.should.equal( (1.0/12).years )
+  end
+end
