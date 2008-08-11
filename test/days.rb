@@ -1,5 +1,4 @@
 require 'temporal'
-require 'bacon'
 
 describe 'Temporal math with days' do
 
