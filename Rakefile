@@ -2,5 +2,5 @@ task :default => :test
 
 desc "unit tests"
 task :test do
-  exec 'bacon -rubygems -ilib test/*'
+  exec 'cd lib && spec -rubygems ../test/*'
 end
