@@ -1,11 +1,6 @@
 module Temporal
-  class Node
-    @@literals = {
-        /(^|\W)now(\W|$)/i => proc{Time.now},
-        /(^|\W)today(\W|$)/i => proc{today_start=Time.parse(Time.now.strftime("%Y-%m-%d"));today_start...today_start+1.day},
-        /(^|\W)yesterday(\W|$)/i => proc{today_start=Time.parse((Time.now-1.day).strftime("%Y-%m-%d"));today_start...today_start+1.day},
-        /(^|\W)tomorrow(\W|$)/i => proc{today_start=Time.parse((Time.now+1.day).strftime("%Y-%m-%d"));today_start...today_start+1.day},
-    }
+  class Parser
+    @@literals = {}
 
     def self.add_literal literal, &block
       @@literals[ literal ] = block
