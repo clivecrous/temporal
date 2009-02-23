@@ -7,6 +7,10 @@ module Temporal
         /(^|\W)tomorrow(\W|$)/i => proc{today_start=Time.parse((Time.now+1.day).strftime("%Y-%m-%d"));today_start...today_start+1.day},
     }
 
+    def self.add_literal literal, &block
+      @@literals[ literal ] = block
+    end
+
     def self.match? string
       to_match = string.downcase.strip
       @@literals.keys.each do |key|
