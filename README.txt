@@ -2,5 +2,4 @@
 
 Temporal is a natural language date and time parser.
 
-source code : http://github.com/clivecrous/temporal/
-home page   : http://clivecrous.lighthouseapp.com/projects/13349/home
+home page   : http://www.darkarts.co.za/temporal
