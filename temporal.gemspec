@@ -12,7 +12,6 @@ Gem::Specification.new do |s|
   s.description = "This project is still in early development. Only the mathematical side is complete. eg: Time.now + 3.years + 2.months"
 
   s.required_rubygems_version = ">= 1.3.6"
-  s.rubyforge_project         = "temporal"
 
   s.add_development_dependency "bundler", ">= 1.0.0"
   s.add_development_dependency "rspec", ">= 1.3.0"
