@@ -8,6 +8,7 @@ Gem::Specification.new do |s|
   s.authors     = ["Clive Crous"]
   s.email       = ["clive@crous.co.za"]
   s.homepage    = "https://github.com/clivecrous/temporal"
+  s.license     = "MIT"
   s.summary     = "A natural language date and time parser"
   s.description = "This project is still in early development. Only the mathematical side is complete. eg: Time.now + 3.years + 2.months"
 
